@@ -1,5 +1,7 @@
 package com.itheima.mp.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.itheima.mp.domain.po.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +54,26 @@ class UserMapperTest {
     @Test
     void testDeleteUser() {
         userMapper.deleteById(5L);
+    }
+
+    @Test
+    void testQueryWrapper() {
+        // 1. 构造查询条件
+        QueryWrapper<User> wrapper = new QueryWrapper<User>()
+                .select("id", "username", "balance", "info")
+                .ge("balance", 1000)
+                .like("username", "o");
+
+        // 2. 查询
+        userMapper.selectList(wrapper);
+    }
+
+    @Test
+    void testUpdateWrapper() {
+        User user = new User();
+        user.setBalance(2000);
+        UpdateWrapper<User> wrapper = new UpdateWrapper<User>().eq("username", "jack");
+
+        userMapper.update(user, wrapper);
     }
 }

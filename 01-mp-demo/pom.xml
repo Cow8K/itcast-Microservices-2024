@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.itheima.mp</groupId>
-    <artifactId>mp-demo</artifactId>
+    <artifactId>01-mp-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mp-demo</name>
+    <name>01-mp-demo</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
