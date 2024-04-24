@@ -1,7 +1,7 @@
 package com.itheima.mp.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.itheima.mp.domain.po.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +69,22 @@ class UserMapperTest {
     }
 
     @Test
-    void testUpdateWrapper() {
+    void testUpdateByQueryWrapper() {
         User user = new User();
         user.setBalance(2000);
-        UpdateWrapper<User> wrapper = new UpdateWrapper<User>().eq("username", "jack");
+        QueryWrapper<User> wrapper = new QueryWrapper<User>().eq("username", "jack");
 
         userMapper.update(user, wrapper);
+    }
+
+    @Test
+    void testUpdateByUpdateWrapper() {
+        List<Long> ids = List.of(1L, 2L, 4L);
+
+        LambdaUpdateWrapper<User> wrapper = new LambdaUpdateWrapper<User>()
+                .setSql("balance = balance - 200")
+                .in(User::getId, ids);
+
+        userMapper.update(null, wrapper);
     }
 }
