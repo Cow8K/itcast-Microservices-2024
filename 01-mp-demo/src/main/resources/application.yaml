@@ -9,13 +9,17 @@ logging:
     com.itheima: debug
   pattern:
     dateformat: HH:mm:ss
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto # ID生成策略
 knife4j:
   enable: true
   openapi:
     title: 用户管理接口文档
     description: "用户管理接口文档"
     email: 894349920@qq.com
-    concat: Cow8K
+    concat: 阿牛
     url: http://localhost
     version: v1.0.0
     group:
