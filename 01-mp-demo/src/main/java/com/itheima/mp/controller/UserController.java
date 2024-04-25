@@ -3,6 +3,7 @@ package com.itheima.mp.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.itheima.mp.domain.dto.UserFormDTO;
 import com.itheima.mp.domain.po.User;
+import com.itheima.mp.domain.query.UserQuery;
 import com.itheima.mp.domain.vo.UserVO;
 import com.itheima.mp.service.IUserService;
 import io.swagger.annotations.Api;
@@ -59,5 +60,16 @@ public class UserController {
     )
     {
         userService.deductionMoneyById(id, money);
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("根据条件查询用户")
+    public List<UserVO> getUserWithCondition(UserQuery query) {
+        return userService.getUserWithCondition(
+                query.getName(),
+                query.getStatus(),
+                query.getMinBalance(),
+                query.getMaxBalance()
+        );
     }
 }
