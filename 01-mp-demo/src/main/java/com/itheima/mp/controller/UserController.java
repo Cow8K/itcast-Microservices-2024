@@ -41,15 +41,13 @@ public class UserController {
     @GetMapping("{id}")
     @ApiOperation("根据ID查询用户接口")
     public UserVO getUserById(@ApiParam("用户ID") @PathVariable("id") Long id) {
-        User user = userService.getById(id);
-        return BeanUtil.copyProperties(user, UserVO.class);
+        return userService.getUserById(id);
     }
 
     @GetMapping
     @ApiOperation("获取用户集合")
     public List<UserVO> getUsers(@ApiParam("用户ID集合") @RequestParam("ids") List<Long> ids) {
-        List<User> users = userService.listByIds(ids);
-        return BeanUtil.copyToList(users, UserVO.class);
+        return userService.getUserByIds(ids);
     }
 
     @ApiOperation("根据用户ID扣减用户余额")
