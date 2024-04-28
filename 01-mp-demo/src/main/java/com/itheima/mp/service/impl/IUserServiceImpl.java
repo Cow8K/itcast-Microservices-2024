@@ -11,9 +11,10 @@ import com.itheima.mp.mapper.UserMapper;
 import com.itheima.mp.service.IUserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by LiuSheng at 2024/4/24 18:38
@@ -71,10 +72,17 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper, User> implements I
 
         List<UserVO> userVOs = BeanUtil.copyToList(users, UserVO.class);
 
-        userVOs.forEach(user -> {
+        /*userVOs.forEach(user -> {
             List<AddressVO> addressVOList = getAddressVOList(user.getId());
             user.setAddress(addressVOList);
-        });
+        });*/
+        Map<Long, List<AddressVO>> addressVOMap = getAddressVOList(ids)
+                .stream()
+                .collect(Collectors.groupingBy(AddressVO::getUserId));
+
+        for (UserVO userVO : userVOs) {
+            userVO.setAddress(addressVOMap.get(userVO.getId()));
+        }
 
         return userVOs;
     }
@@ -88,6 +96,17 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper, User> implements I
         if (addressList == null || addressList.isEmpty()) {
             return Collections.emptyList();
         }
+
+        return BeanUtil.copyToList(addressList, AddressVO.class);
+    }
+
+    private List<AddressVO> getAddressVOList(List<Long> ids) {
+        List<Address> addressList = Db.lambdaQuery(Address.class)
+                .in(Address::getUserId, ids)
+                .list();
+
+        if (addressList == null || addressList.isEmpty())
+            return Collections.emptyList();
 
         return BeanUtil.copyToList(addressList, AddressVO.class);
     }
