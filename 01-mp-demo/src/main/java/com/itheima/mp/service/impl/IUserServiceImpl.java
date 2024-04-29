@@ -1,11 +1,14 @@
 package com.itheima.mp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
+import com.itheima.mp.domain.dto.PageDTO;
 import com.itheima.mp.domain.enums.UserStatus;
 import com.itheima.mp.domain.po.Address;
 import com.itheima.mp.domain.po.User;
+import com.itheima.mp.domain.query.UserQuery;
 import com.itheima.mp.domain.vo.AddressVO;
 import com.itheima.mp.domain.vo.UserVO;
 import com.itheima.mp.mapper.UserMapper;
@@ -86,6 +89,25 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper, User> implements I
         }
 
         return userVOs;
+    }
+
+    @Override
+        public PageDTO<UserVO> getUserPage(UserQuery query) {
+        String name = query.getName();
+        String sortBy = query.getSortBy();
+        Integer status = query.getStatus();
+
+        // 1. 构建分页条件
+        Page<User> page = query.orderByCreationTime(sortBy);
+
+        // 2. 查询
+        page = lambdaQuery()
+                .like(name != null, User::getUsername, name)
+                .eq(status != null, User::getStatus, status)
+                .page(page);
+
+        // 3. User List转UserVo List
+        return PageDTO.of(page, UserVO.class);
     }
 
     private List<AddressVO> getAddressVOList(Long userId) {

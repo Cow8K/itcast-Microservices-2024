@@ -1,6 +1,7 @@
 package com.itheima.mp.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.itheima.mp.domain.dto.PageDTO;
 import com.itheima.mp.domain.dto.UserFormDTO;
 import com.itheima.mp.domain.po.User;
 import com.itheima.mp.domain.query.UserQuery;
@@ -69,5 +70,11 @@ public class UserController {
                 query.getMinBalance(),
                 query.getMaxBalance()
         );
+    }
+
+    @GetMapping("/page")
+    @ApiOperation("分页查询用户")
+    public PageDTO<UserVO> getUserPage(UserQuery query) {
+        return userService.getUserPage(query);
     }
 }
