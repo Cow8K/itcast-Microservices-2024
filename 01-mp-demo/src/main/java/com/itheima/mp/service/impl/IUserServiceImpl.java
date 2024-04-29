@@ -3,6 +3,7 @@ package com.itheima.mp.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
+import com.itheima.mp.domain.enums.UserStatus;
 import com.itheima.mp.domain.po.Address;
 import com.itheima.mp.domain.po.User;
 import com.itheima.mp.domain.vo.AddressVO;
@@ -11,7 +12,6 @@ import com.itheima.mp.mapper.UserMapper;
 import com.itheima.mp.service.IUserService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper, User> implements I
     public void deductionMoneyById(Long id, Double money) {
         User user = baseMapper.selectById(id);
 
-        if (user == null || user.getStatus() == 2)
+        if (user == null || user.getStatus() == UserStatus.FROZEN)
             throw new RuntimeException("用户状态异常");
 
         if (user.getBalance() < money)
@@ -54,7 +54,7 @@ public class IUserServiceImpl extends ServiceImpl<UserMapper, User> implements I
     @Override
     public UserVO getUserById(Long id) {
         User user = getById(id);
-        if (user == null || user.getStatus() == 2)
+        if (user == null || user.getStatus() == UserStatus.FROZEN)
             throw new RuntimeException("用户状态异常");
 
         UserVO userVO = BeanUtil.copyProperties(user, UserVO.class);

@@ -1,6 +1,8 @@
 package com.itheima.mp.service.impl;
 
+import com.itheima.mp.domain.enums.UserStatus;
 import com.itheima.mp.domain.po.User;
+import com.itheima.mp.domain.po.UserInfo;
 import com.itheima.mp.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +33,10 @@ class IUserServiceTest {
             User user = new User();
             user.setUsername("user_" + i);
             user.setPassword("123456");
-            user.setStatus(1);
-            user.setInfo("{\"age\":1}");
+            user.setStatus(UserStatus.NORMAL);
+
+            UserInfo userInfo = new UserInfo();
+            user.setInfo(userInfo);
 
             list.add(user);
 
