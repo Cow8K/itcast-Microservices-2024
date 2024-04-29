@@ -1,5 +1,7 @@
 package com.itheima.mp.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.mp.domain.enums.UserStatus;
 import com.itheima.mp.domain.po.User;
 import com.itheima.mp.domain.po.UserInfo;
@@ -24,6 +26,15 @@ class IUserServiceTest {
         long b = System.currentTimeMillis();
         saveUser(100000);
         System.out.println("共耗时：" + (System.currentTimeMillis() - b));
+    }
+
+    @Test
+    public void testQueryUserByPage() {
+        Page<User> page = new Page<>();
+        page.setCurrent(1);
+        page.setSize(2);
+        List<User> records = userService.page(page).getRecords();
+        System.out.println(records);
     }
 
     private void saveUser(int number) {
